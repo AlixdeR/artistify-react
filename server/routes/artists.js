@@ -47,7 +47,13 @@ router.get("/artists", async (req, res, next) => {
 
 
 router.get("/artists/:id", (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  const artistId = req.params.id;
+  artistModel
+    .findById(artistId)
+    .then(dbRes => {
+      res.status(200).json(dbRes);
+    })
+    .catch(next);
 });
 
 router.get("/filtered-artists", (req, res, next) => {
@@ -55,15 +61,43 @@ router.get("/filtered-artists", (req, res, next) => {
 });
 
 router.post("/artists", (req, res) => {
-  res.status(200).json({ msg: "@todo" })
+  const { name, description, isBand } = req.body;
+  const newArtist = {
+    name, 
+    description, 
+    isBand
+  };
+
+  artistModel
+    .create(newArtist)
+    .then(dbRes => {
+      res.status(201).json(dbRes);
+    })
+    .catch(dbErr => console.error(dbErr));
 });
 
 router.patch("/artists/:id", async (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  const { name, description, isBand } = req.body;
+
+  artistModel
+    .findByIdAndUpdate(req.params.id, {
+      name,
+      description,
+      isBand
+    })
+    .then(dbRes => {
+      res.status(200).json(dbRes)
+    })
+    .catch(dbErr => console.error(dbErr));
 });
 
-router.delete("/artists/:id", (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+router.delete("/artists/:id", (req, res) => {
+  artistModel
+    .findByIdAndDelete(req.params.id)
+    .then(dbRes => {
+      res.status(200).json(dbRes)
+    })
+    .catch(dbErr => console.error(dbErr));
 });
 
 module.exports = router;

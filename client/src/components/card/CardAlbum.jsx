@@ -6,5 +6,9 @@ import IconFav from "../icon/IconFavorite";
 import "./../../styles/icon-color.css";
 
 export default function CardArtist({ data }) {
-  return <div>@todo</div>;
+  return <div>
+  {data.title}
+  <img className="cover" src={data.cover} alt="album"/>
+  <IconFav/>
+  </div>;
 }

@@ -27,7 +27,14 @@ class FormArtist extends Component {
       this.setState({styles: apiRes.data.styles})
       })
       .catch(apiErr => this.setState(apiErr));
-    };
+    
+    APIHandler.get(`/artists/${this.props._id}`)
+    .then(artist => {
+      console.log(artist.data)
+      this.setState({name: artist.data.name, description: artist.data.description, isBand: artist.data.isBand, style: artist.data.style })
+    })
+    .catch(apiErr => this.setState(apiErr));
+    }
 
     handleState = e => {
       e.preventDefault();
@@ -48,7 +55,7 @@ class FormArtist extends Component {
 
     submitForm = e => {
       e.preventDefault();
-      APIHandler.post("/artists", {
+      APIHandler.post("/artists/", {
         name: this.state.name,
         description: this.state.description,
         isBand: this.state.isBand,
@@ -60,12 +67,30 @@ class FormArtist extends Component {
       .catch(apiErr =>this.setState({msg: <div className="msg-fail">An error occured, try again!</div>}));
     };
 
+    submitEditForm = e => {
+      e.preventDefault();
+      APIHandler.patch(`/artists/${this.props._id}`, {
+        name: this.state.name,
+        description: this.state.description,
+        isBand: this.state.isBand,
+        style: this.state.style
+      })
+     .then(apiRes => {
+        this.setState({msg: <div className="msg-ok">The artist was successfully updated!</div>})
+      })
+      .catch(apiErr =>this.setState({msg: <div className="msg-fail">An error occured, try again!</div>}));
+    };
+
+
     render() {
+
         return (
+
             <div>
 
                 {this.state.msg && this.state.msg}
-                 
+                
+                {this.props.mode === "create" ? (
                 <form className="form" onSubmit={this.submitForm} onChange={this.handleState}>
                     <label className="label">Name</label>
                     <input className="input" type="text" name="name"/>
@@ -75,6 +100,7 @@ class FormArtist extends Component {
 
                     <label className="label">Style</label>
                     <select className="input" name="style">
+                    <option disabled>Choose Style</option>
                       {this.state.styles.map((s,i) => (<option key={i} value={s._id}>{s.name}</option>))};
                     </select>
 
@@ -84,6 +110,28 @@ class FormArtist extends Component {
                     <button className="btn" type="submit">Create Artist</button>
 
                 </form>
+
+                ) : (
+
+                  <form className="form" onSubmit={this.submitEditForm} onChange={this.handleState}>
+                    <label className="label">Name</label>
+                    <input className="input" type="text" name="name" value={this.state.name}/>
+    
+                    <label className="label">Description</label>
+                    <textarea className="input" name="description" value={this.state.description}></textarea>
+
+                    <label className="label">Style</label>
+                    <select className="input" name="style" value={this.state.style}>
+                      {this.state.styles.map((s,i) => (<option key={i} value={s._id}>{s.name}</option>))};
+                    </select>
+
+                    <label className="label">Is band?</label>
+                    <input className="input" type="checkbox" name="isBand" value={this.state.isBand} onClick={this.handleCheckbox}/>
+            
+                    <button className="btn" type="submit">Edit Artist</button>
+
+                </form>
+                )}
                 
             </div>
     );

@@ -53,7 +53,13 @@ router.get("/albums", (req, res, next) => {
 });
 
 router.get("/albums/:id", (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  const albumId = req.params.id;
+  albumModel
+    .findById(albumId)
+    .then(dbRes => {
+      res.status(200).json(dbRes);
+    })
+    .catch(next);
 });
 
 router.post("/albums", uploader.single("cover"), (req, res, next) => {
@@ -87,14 +93,19 @@ router.patch("/albums/:id", uploader.single("cover"), (req, res, next) => {
       artist,
       releaseDate
     })
-    .then(dbRes => {
+    .then(dbRes => { 
       res.status(200).json(dbRes)
     })
     .catch(dbErr => console.error(dbErr));
 });
 
 router.delete("/albums/:id", (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  albumModel
+    .findByIdAndDelete(req.params.id)
+    .then(dbRes => {
+      res.status(200).json(dbRes)
+    })
+    .catch(dbErr => console.error(dbErr));
 });
 
 module.exports = router;

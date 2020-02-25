@@ -61,9 +61,7 @@ class FormAlbum extends Component {
       artist: this.state.artist,
       label: this.state.label
     })
-  .then(apiRes => {
-      this.setState({msg: <div className="msg-ok">The album was successfully created!</div>})
-    })
+    .then(apiRes => this.props.history.push("/admin/albums"))
     .catch(apiErr =>this.setState({msg: <div className="msg-fail">An error occured, try again!</div>}));
   };
 
@@ -76,10 +74,8 @@ class FormAlbum extends Component {
       artist: this.state.artist,
       label: this.state.label
     })
-   .then(apiRes => {
-      this.setState({msg: <div className="msg-ok">The album was successfully updated!</div>})
-    })
-    .catch(apiErr =>this.setState({msg: <div className="msg-fail">An error occured, try again!</div>}));
+   .then(apiRes => this.props.history.push("/admin/albums"))
+   .catch(apiErr =>this.setState({msg: <div className="msg-fail">An error occured, try again!</div>}));
   };
 
   render() {

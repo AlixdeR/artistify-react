@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 // custom tools
 import LabPreview from "../LabPreview";
 // styles
@@ -61,9 +61,7 @@ class FormArtist extends Component {
         isBand: this.state.isBand,
         style: this.state.style
       })
-     .then(apiRes => {
-        this.setState({msg: <div className="msg-ok">The artist was successfully created!</div>})
-      })
+      .then(apiRes => this.props.history.push("/admin/artists"))
       .catch(apiErr =>this.setState({msg: <div className="msg-fail">An error occured, try again!</div>}));
     };
 
@@ -75,11 +73,9 @@ class FormArtist extends Component {
         isBand: this.state.isBand,
         style: this.state.style
       })
-     .then(apiRes => {
-        this.setState({msg: <div className="msg-ok">The artist was successfully updated!</div>})
-      })
-      .catch(apiErr =>this.setState({msg: <div className="msg-fail">An error occured, try again!</div>}));
-    };
+      .then(apiRes => this.props.history.push("/admin/artists"))
+      .catch(apiErr => this.setState({msg: <div className="msg-fail">An error occured, try again!</div>}));
+    }
 
 
     render() {
@@ -100,7 +96,7 @@ class FormArtist extends Component {
 
                     <label className="label">Style</label>
                     <select className="input" name="style">
-                    <option disabled>Choose Style</option>
+                    <option defaultSelected>Choose Style</option>
                       {this.state.styles.map((s,i) => (<option key={i} value={s._id}>{s.name}</option>))};
                     </select>
 
@@ -122,6 +118,7 @@ class FormArtist extends Component {
 
                     <label className="label">Style</label>
                     <select className="input" name="style" value={this.state.style}>
+                      <option defaultSelected>Choose Style</option>
                       {this.state.styles.map((s,i) => (<option key={i} value={s._id}>{s.name}</option>))};
                     </select>
 

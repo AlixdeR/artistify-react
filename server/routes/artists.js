@@ -61,11 +61,12 @@ router.get("/filtered-artists", (req, res, next) => {
 });
 
 router.post("/artists", (req, res) => {
-  const { name, description, isBand } = req.body;
+  const { name, description, isBand, style } = req.body;
   const newArtist = {
     name, 
     description, 
-    isBand
+    isBand,
+    style
   };
 
   artistModel

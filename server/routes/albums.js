@@ -57,11 +57,40 @@ router.get("/albums/:id", (req, res, next) => {
 });
 
 router.post("/albums", uploader.single("cover"), (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  const { title, description, label, artist, releaseDate } = req.body;
+
+  const newAlbum = {
+      title,
+      description,
+      label,
+      artist,
+      releaseDate
+  };
+
+  albumModel
+    .create(newAlbum)
+    .then(dbRes => {
+      console.log(dbRes);
+      res.status(201).json(dbRes);
+    })
+    .catch(dbErr => console.error(dbErr));
 });
 
 router.patch("/albums/:id", uploader.single("cover"), (req, res, next) => {
-  res.status(200).json({ msg: "@todo" })
+  const { title, description, label, artist, releaseDate } = req.body;
+
+  albumModel
+    .findByIdAndUpdate(req.params.id, {
+      title,
+      description,
+      label,
+      artist,
+      releaseDate
+    })
+    .then(dbRes => {
+      res.status(200).json(dbRes)
+    })
+    .catch(dbErr => console.error(dbErr));
 });
 
 router.delete("/albums/:id", (req, res, next) => {

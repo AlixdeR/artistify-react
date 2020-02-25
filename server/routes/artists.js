@@ -78,13 +78,14 @@ router.post("/artists", (req, res) => {
 });
 
 router.patch("/artists/:id", async (req, res, next) => {
-  const { name, description, isBand } = req.body;
+  const { name, description, isBand, style } = req.body;
 
   artistModel
     .findByIdAndUpdate(req.params.id, {
       name,
       description,
-      isBand
+      isBand,
+      style
     })
     .then(dbRes => {
       res.status(200).json(dbRes)

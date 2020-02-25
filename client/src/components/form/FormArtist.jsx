@@ -7,8 +7,6 @@ import "./../../styles/form.css";
 import APIHandler from "../../api/APIHandler";
 
 
-
-
 class FormArtist extends Component {
       state = {
         msg: "",
@@ -22,7 +20,7 @@ class FormArtist extends Component {
         updatedAt: ""
     }
 
-    componentDidMount() {
+    componentDidMount = () => {
       APIHandler.get("/styles")
       .then(apiRes => {
       console.log(apiRes.data.styles);
@@ -31,17 +29,17 @@ class FormArtist extends Component {
       .catch(apiErr => this.setState(apiErr));
     };
 
-
     handleState = e => {
       e.preventDefault();
+      console.log(e.target.value);
       this.setState({ [e.target.name]: e.target.value });
     }
 
-    handleSelect = e => {
-      e.preventDefault();
-      console.log(e.target.value);
-      this.setState({ style: e.target.value });
-    }
+    // handleSelect = e => {
+    //   e.preventDefault();
+    //   console.log(e.target.value);
+    //   this.setState({ style: e.target.value });
+    // }
 
     handleCheckbox = e => {
       this.state.isBand = !this.state.isBand
@@ -76,7 +74,7 @@ class FormArtist extends Component {
                     <textarea className="input" name="description"></textarea>
 
                     <label className="label">Style</label>
-                    <select className="input" onChange={this.handleSelect}>
+                    <select className="input" name="style">
                       {this.state.styles.map((s,i) => (<option key={i} value={s._id}>{s.name}</option>))};
                     </select>
 

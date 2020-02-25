@@ -9,7 +9,7 @@ export default function CardArtist({ data }) {
   
   return <div>
     <div className="icon-color" style={{backgroundColor: `${data.style.color}`}}></div>
-    {data.name}
+    <Link to={`/artists/${data._id}`}> {data.name} </Link>
     <IconFav/>
-  </div>;
+  </div>
 }
